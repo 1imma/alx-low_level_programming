@@ -12,7 +12,8 @@ int main(void)
 
 	for (number = 0; number < 10; number++)
 	{
-		printf("The number is:%d\n", number);
+		printf("%d", number);
 	}
+	printf("\n");
 	return (0);
 }
