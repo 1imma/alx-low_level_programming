@@ -1,42 +1,47 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <string.h>
 
 #define PASSWORD_LENGTH 6
 
 /**
- * generateRandomChar - Generates a random character
+ * generatePassword - Generates a password based on the given index
  *
- * Return: The generated character
+ * @index: The index used to generate the password
+ * @password: The generated password
  */
-char generateRandomChar(void)
+void generatePassword(int index, char *password)
 {
-	int randomNum = rand() % 62;
-	char ch;
+    int i;
+    char characters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    int numCharacters = strlen(characters);
 
-	if (randomNum < 26)
-		ch = 'A' + randomNum;
-	else if (randomNum < 52)
-		ch = 'a' + randomNum - 26;
-	else
-		ch = '0' + randomNum - 52;
+    for (i = PASSWORD_LENGTH - 1; i >= 0; i--)
+    {
+        password[i] = characters[index % numCharacters];
+        index /= numCharacters;
+    }
 
-	return (ch);
+    password[PASSWORD_LENGTH] = '\0';
 }
 
 /**
- * generateRandomPassword - Generates a random password
- * @password: Pointer to the password array
+ * crackme - Simulates the crackme program
+ *
+ * @password: The password to check
+ * @return: 1 if the password is correct, 0 otherwise
  */
-void generateRandomPassword(char *password)
+int crackme(char *password)
 {
-	int i;
-
-	for (i = 0; i < PASSWORD_LENGTH; i++)
-	{
-		password[i] = generateRandomChar();
-	}
-	password[PASSWORD_LENGTH] = '\0';
+    if (strcmp(password, "Tada!") == 0)
+    {
+        printf("Congrats\n");
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 /**
@@ -46,13 +51,19 @@ void generateRandomPassword(char *password)
  */
 int main(void)
 {
-	char password[PASSWORD_LENGTH + 1];
+    char password[PASSWORD_LENGTH + 1];
+    int index = 0;
 
-	srand(time(NULL)); /* Seed the random number generator */
+    while (1)
+    {
+        generatePassword(index, password);
+        if (crackme(password))
+        {
+            break;
+        }
+        index++;
+    }
 
-	generateRandomPassword(password);
-	printf("Random Password: %s\n", password);
-
-	return (0);
+    return 0;
 }
 
