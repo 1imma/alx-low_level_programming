@@ -11,6 +11,7 @@ int _strlen(char *s);
 int is_palindrome(char *s)
 {
 	int length = _strlen(s);
+
 	return (check_palindrome(s, 0, length - 1));
 }
 /**
